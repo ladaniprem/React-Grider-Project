@@ -1,47 +1,32 @@
 import { useState } from "react";
 // function SearchBar({onSubmit}) {
 function SearchBar({onSubmit}) {
- 
-   const [term,setTerm] = useState('');
-  // const handleClick = () =>{
-      // onSubmit('cars');
-  // without using the event their submit the data to reload the react app their does show the I need to tell the parent about some data 
-   // when event happens, we want to tell the parent component
+  const [term,setTerm] = useState('');
 
-const handleFormClick = (event) =>{
-  event.preventDefault();
+  const handleFormClick = (event) =>{
+    event.preventDefault();
     onSubmit(term); 
- 
-//  console.log('I need to tell the parent about some data');
-
-// Never Ever do this
-// Don't try to get a value out of an input using a query selector(or similar)
-// you will be rejected from job interviews if you write code like this
-
-// onSubmit(
-//   document.querySelector('input').value
-// )
-
-// warning :- the way React handles form elements (text input,checkboxes,radio buttons ,etc.) is a little weird
-};
- 
-const handleChange = (e) => {
-  // setTerm(e.target.value.replace(/[a-z]/,''));
-  setTerm(e.target.value);
-};
+  };
+   
+  const handleChange = (e) => {
+    setTerm(e.target.value);
+  };
 
   return (
-    <>
-      <div>
-        {/* <input/>
-        <button onClick={handleClick}>Search</button> */}
-         {/* confirm your serch:{term} */}
+    <div className="mt-8 w-full max-w-2xl animate-fade-in-down">
+      <div className="transform transition-all duration-500 hover:scale-105 hover:shadow-xl bg-white rounded-lg p-4 animate-slide-in">
         <form onSubmit={handleFormClick}>
-         {/* {term.length <5 && 'Term must be longer'} */}
-          <input value={term} onChange={handleChange} />
+          <input 
+            value={term} 
+            onChange={handleChange}
+            className="px-4 py-2 rounded-full border border-gray-300 w-full outline-none 
+                    transition-all duration-300 ease-in-out focus:shadow-lg focus:scale-102 
+                    focus:border-blue-500 placeholder:opacity-70"
+            placeholder="Search..."
+          />
         </form>
       </div>
-    </>
+    </div>
   );
 }
 
