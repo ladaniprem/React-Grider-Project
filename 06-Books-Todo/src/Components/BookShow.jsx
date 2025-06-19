@@ -5,13 +5,20 @@ function BookShow({book, onDelete, onEdit}) {
 
   const [showEdit, setShowEdit] = useState('false');
 
+   const handleSubmit = (id,newTitle) => {
+    setShowEdit(false);
+    onEdit(id, newTitle);
+  }
+
   let content =  <h3 className='text-xl font-semibold text-gray-800 mb-4'>
         {book.title}
       </h3>;
   if (showEdit) {
-    content = <BookEdit onEdit={onEdit} book={book} />
+    content = <BookEdit onSubmit = {handleSubmit}  book={book} />
   }
-  
+
+ 
+   
   return (
     <div className='transform transition-all duration-300 hover:scale-105 bg-white rounded-lg shadow-lg p-4 m-2 hover:shadow-xl'>
      <div >

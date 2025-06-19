@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-function BookEdit({ book,onEdit }) {
+function BookEdit({ book,onSubmit}) {
   const [title, setTitle] = useState(book.title);
 
   const handleTitleChange = (e) => {
@@ -11,8 +11,9 @@ function BookEdit({ book,onEdit }) {
     e.preventDefault();
     // Logic to save the book title
     // console.log('Book title saved:', title);
-    onEdit(book.id, title);
+    // onEdit(book.id, title);
     setTitle(''); // Clear the input field after saving
+    onSubmit(book.id,title); // Call the onSubmit function to indicate that editing is done
   }
 
   
