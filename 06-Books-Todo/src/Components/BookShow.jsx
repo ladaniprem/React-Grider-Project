@@ -21,7 +21,14 @@ function BookShow({book, onDelete, onEdit}) {
    
   return (
     <div className='transform transition-all duration-300 hover:scale-105 bg-white rounded-lg shadow-lg p-4 m-2 hover:shadow-xl'>
-     <div >
+      <div className='flex justify-center mb-4 overflow-hidden'>
+        <img 
+          alt='books' 
+          src={`https://picsum.photos/seed/${book.id}/300/200`}
+          className='rounded-lg transition-transform duration-300 hover:scale-110'
+        />
+      </div>
+     <div>
       {content}
      </div>
       <div className='actions mt-auto flex justify-end'>
