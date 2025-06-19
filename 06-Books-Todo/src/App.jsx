@@ -1,14 +1,39 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import './App.css';
 import BookCreate from './components/BookCreate';
 import BookList from './components/BookList';
-import BookShow from './components/BookShow'; 
+import axios from 'axios';
 
 function App() {
   
   const [books,setBooks] = useState([]);
 
-  const createBook = (title) => {
+  const fetchBooks = async () => {
+    const response = await axios.get('http://localhost:3001/books');
+    setBooks(response.data)
+  }
+
+  useEffect(() => {
+    return () => {
+      fetchBooks();
+    }
+  }, [])
+  
+  // don't do this
+  // fetchBooks();
+
+
+ const createBook = async (title) => {
+  const response = await axios.post('http://localhost:3001/books', {
+    title: title
+  });
+
+  const updatedBooks = [...books, response.data];
+  setBooks(updatedBooks);
+ }
+
+
+
     // Bad code 
     // books.push({id:123,title:title});
     // console.log('Books after creation:', books);
@@ -19,15 +44,17 @@ function App() {
     // console.log('Creating book:', title);
     // setBooks([...books]);
 
-    const updatedBooks = [...books, {id:Math.round(Math.random()*9999),title}];
-    setBooks(updatedBooks);
-  }
+  //   const updatedBooks = [...books, {id:Math.round(Math.random()*9999),title}];
+  //   setBooks(updatedBooks);
+  // }
 
   // const handleCreateBook = (title) => {
   //    console.log('Creating book:', title);
   // }
 
-  const deleteBookId = (id) => {
+  const deleteBookId = async (id) => {
+    await axios.delete(`http://localhost:3001/books/${id}`);
+
     const updatedBooks = books.filter((books) => {
       return books.id !== id;
     });
@@ -35,7 +62,12 @@ function App() {
     console.log('Book deleted with id:', id);
   };
 
-  const editBookId = (id,newTitle) => {
+  const editBookId = async (id,newTitle) => {
+    const response = await axios.put(`http://localhost:3001/books/${id}`, {
+      title:newTitle
+    })
+    console.log('response:', response);
+
     const updatedBooks= books.map((book)=> {
       if(book.id===id){
            return {...book, title: newTitle};
@@ -44,7 +76,7 @@ function App() {
     });
     setBooks(updatedBooks);
   }
-
+   
   return (
     <>
       <h1 className="animate-fade-in bg-gradient-to-r from-red-600 via-yellow-500 to-blue-600 bg-clip-text text-transparent">
@@ -61,7 +93,7 @@ function App() {
   )
 }
 
-export default App
+export default App;
 
 // Key point some the video why the speccial syntax
 
