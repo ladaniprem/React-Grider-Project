@@ -1,0 +1,89 @@
+// Variable Declarations with Type Annotations
+const color: string = 'red';
+const isRed: boolean = color === 'red';
+const age: number = 20;
+
+// Arrays with Type Annotations
+const colors: string[] = [
+    'red', 'green', 'blue'
+    // Only strings allowed in this array
+];
+
+const areColorRed: boolean[] = [
+    true, false, false
+];
+
+const ages: number[] = [
+    20, 30, 40
+];
+
+// Function with Parameter and Return Type Annotations
+function add(a: number, b: number): number {
+    return a + b;
+}
+
+const sum = add(1, 5);
+
+// Function to Print Array of Colors
+function printColors(colors: string[]): void {
+    console.log(colors);
+}
+
+printColors(['yellow', 'Rose Pink', 'Orange']);
+
+// Function to Print Age
+function printAge(age: number): void {
+    console.log(age);
+}
+printAge(24);
+
+// Type Inference Example
+const hours = 10; // inferred as number
+const ocean = 'pacific'; // inferred as string
+
+function getName(): string {
+    return 'Ladani prem';
+}
+
+// Interface Example
+interface Car {
+    year: number;
+    model: string;
+    make: string;
+}
+
+// Function using Interface as Parameter Type
+function formatCar(car: Car): string {
+    return `Year: ${car.year}, Model: ${car.model}, Make: ${car.make}`;
+}
+
+formatCar({
+    year: 2012,
+    make: 'Hyundai',
+    model: 'Verna'
+});
+
+// Using Interface to Annotate Props in React Component
+import React from 'react';
+
+interface TaskShowProps {
+    title: string;
+    completed: boolean;
+}
+
+function TaskShow({ title, completed }: TaskShowProps) {
+    return (
+        <div>
+            {title} - {completed ? 'Done' : 'Need to complete'}
+        </div>
+    );
+}
+
+// Example usage of TaskShow component
+<TaskShow title="abc" completed={true} />;
+
+// Theory:
+// - Type annotations help catch errors at compile time.
+// - Interfaces define the shape of objects and props in React.
+// - Type inference lets TypeScript automatically determine variable types.
+// - Always annotate function parameters and return types for clarity.
