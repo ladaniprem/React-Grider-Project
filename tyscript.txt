@@ -200,3 +200,266 @@ getDescription() {
 };
 
 mustang.setModel()
+
+
+
+
+ - ColorPickerProps interface defines the props for the ColorPicker component.
+ - colors: An array of color strings to display as selectable options.
+ - handleColorSelect: Callback function invoked when a color is selected.
+ 
+
+
+ - ColorPicker is a React functional component that renders a list of color buttons.
+ - When a button is clicked, it calls the handleColorSelect function with the selected color.
+  
+ - Example usage:
+  <ColorPicker
+    colors={['red', 'green', 'blue']}
+    handleColorSelect={(color) => console.log(color)}
+  />
+ 
+  ButtonProps interface defines the props for the Button component.
+  - label: The text to display on the button.
+  - onClick: Callback function invoked when the button is clicked.
+ 
+ - Button is a simple React functional component that renders a button with a label.
+ - When clicked, it calls the onClick handler.
+ 
+ - IconButtonProps extends ButtonProps and adds:
+ - icon: A string representing the icon to display alongside the label.
+ 
+ - IconButton is a React functional component that renders a button with an icon and label.
+ - It calls the onClick handler when clicked.
+ 
+ - Type Unions:
+ - Demonstrates how to use union types in TypeScript to allow a function parameter to accept multiple types.
+ - Example: string | number | string[] | image
+  
+ - This allows the logOutput function to accept a string, number, array of strings, or an image object.
+ - Passing a type not included in the union (e.g., boolean) will result in a TypeScript error.
+
+ -  Type Narrowing with Type Guards:
+ -  Shows how to use type guards (typeof, Array.isArray) to narrow down the type of a union parameter at runtime.
+ -  This enables safe access to properties and methods specific to each type.
+  
+  - Example:
+  - typeof value === 'string' allows string-specific operations.
+  - Array.isArray(value) checks for arrays.
+  - typeof value === 'object' && !Array.isArray(value) checks for objects (e.g., image).
+ 
+ - Type Predicates:
+ - Demonstrates how to distinguish between different object types in a union (e.g., Image | User).
+ - Type predicates can be used to create custom type guards for more complex scenarios.
+
+ 
+// function types 
+import React from 'react';
+
+interface ColorPickerProps {
+  colors: string[];
+  handleColorSelect: (color: string) => void;
+}
+
+function ColorPicker({ colors, handleColorSelect }: ColorPickerProps) {
+  const renderedColors = colors.map(color => {
+    return (
+      <button key={color} onClick={() => handleColorSelect(color)}>
+        {color}
+      </button>
+    );
+  });
+
+  return (
+    <>
+      <div>{renderedColors}</div>
+      <ColorPicker
+        colors={['red', 'green', 'blue']}
+        handleColorSelect={(color: string) => console.log(color)}
+      />
+      </>
+  );
+}
+
+
+ import React from 'react';
+
+ interface ButtonProps {
+     label  : string;
+     onClick : () => void;
+ }
+
+
+ function Button({ label, onClick }: ButtonProps) {
+   return <button onClick={onClick}>{label}</button>;
+ }
+ interface IconButtonProps extends ButtonProps{
+     icon : string;
+ }
+ function IconButton({ label, onClick, icon} : IconButtonProps){
+       return <button onClick = {() => onClick()}>  {icon}{label} </button>
+ }
+
+ // type Unions 
+// interface image {
+//     src: string;
+// }
+// function logOutput(value: string | number | string[] | image )
+// {
+   
+// }
+
+// logOutput('hi bro');
+// logOutput(1234);
+// logOutput(['hi','bro']);
+// logOutput({ src : 'image.jpg'})
+
+// logOutput(true); Argument of type 'boolean' is not assignable to parameter of type 'string | number | image | string[]'.
+
+
+// Type Narrowing with Type Guards 
+
+// interface image {
+//     src: string;
+// }
+// function logOutput(value: string | number | string[] | image )
+// {
+//     // if value is a string...
+//    if (typeof value === 'string') { 
+//        value.toUpperCase();
+//    }
+// }
+
+// logOutput('hi bro');
+// logOutput(1234);
+// logOutput(['hi','bro']);
+// logOutput({ src : 'image.jpg'})
+
+
+// Tricky cases with Type Guards
+
+interface image {
+    src: string;
+}
+function logOutput(value: string | number | string[] | image )
+{
+    // if value is a string...
+   if (typeof value === 'string') { 
+      console.log( value.toUpperCase());
+   }
+   if(typeof value === 'number'){
+      Math.random();
+   }
+//    if(typeof value === 'object'){
+//     value // value: image | string[
+//    }
+
+  if(Array.isArray(value)){
+    // value  value: string[]
+    value.join('');
+   }
+
+   if(typeof value === 'object' && !Array.isArray(value)){
+    //  value  value: image
+    value.src; 
+   }
+}
+
+logOutput('hi bro');
+logOutput(1234);
+logOutput(['hi','bro']);
+logOutput({ src : 'image.jpg'})
+
+
+// type Unions 
+// interface image {
+//     src: string;
+// }
+// function logOutput(value: string | number | string[] | image )
+// {
+   
+// }
+
+// logOutput('hi bro');
+// logOutput(1234);
+// logOutput(['hi','bro']);
+// logOutput({ src : 'image.jpg'})
+
+// logOutput(true); Argument of type 'boolean' is not assignable to parameter of type 'string | number | image | string[]'.
+
+
+// Type Narrowing with Type Guards 
+
+// interface image {
+//     src: string;
+// }
+// function logOutput(value: string | number | string[] | image )
+// {
+//     // if value is a string...
+//    if (typeof value === 'string') { 
+//        value.toUpperCase();
+//    }
+// }
+
+// logOutput('hi bro');
+// logOutput(1234);
+// logOutput(['hi','bro']);
+// logOutput({ src : 'image.jpg'})
+
+
+// Tricky cases with Type Guards
+
+// interface image {
+//     src: string;
+// }
+// function logOutput(value: string | number | string[] | image )
+// {
+//     // if value is a string...
+//    if (typeof value === 'string') { 
+//       console.log( value.toUpperCase());
+//    }
+//    if(typeof value === 'number'){
+//       Math.random();
+//    }
+// //    if(typeof value === 'object'){
+// //     value // value: image | string[
+// //    }
+
+//   if(Array.isArray(value)){
+//     // value  value: string[]
+//     value.join('');
+//    }
+
+//    if(typeof value === 'object' && !Array.isArray(value)){
+//     //  value  value: image
+//     value.src; 
+//    }
+// }
+
+// logOutput('hi bro');
+// logOutput(1234);
+// logOutput(['hi','bro']);
+// logOutput({ src : 'image.jpg'})
+
+// Type Predicates 
+
+
+interface image {
+    src: string;
+}
+interface User {
+    username : string
+}
+function logOutput(value: Image | User )
+{
+  if (typeof value === 'object'){
+     value;
+  }
+}
+
+
+logOutput({ src : 'image.jpg'});
+logOutput({username : 'ladani prem'});
+
+
+
