@@ -87,3 +87,116 @@ function TaskShow({ title, completed }: TaskShowProps) {
 // - Interfaces define the shape of objects and props in React.
 // - Type inference lets TypeScript automatically determine variable types.
 // - Always annotate function parameters and return types for clarity.
+
+
+ - This code demonstrates the concept of TypeScript type inference and its limitations,
+ - particularly when working with interfaces and object literals. It defines a `Car` interface
+ - and shows how TypeScript enforces strict property checks on object literals assigned to typed variables.
+  
+ //  Key Points:
+  - TypeScript's type inference can catch errors when extra or missing properties are present in object literals.
+  - When an object literal contains properties not defined in the interface (e.g., `make`), TypeScript will raise an error.
+  - The code also explores function types within interfaces, showing how to define methods (`setYear`, `setModel`, `getDescription`)
+    as part of the `Car` interface.
+  - Attempting to assign an object literal with methods to a variable of type `Car` will result in errors if the implementation
+    does not match the interface exactly.
+  - The example highlights the importance of matching interface definitions precisely and demonstrates how TypeScript's
+    structural typing system enforces these contracts at compile time.
+  
+  //  Theory:
+  - TypeScript uses structural typing, meaning that the shape of the object (its properties and methods) must match the interface.
+  - Type inference helps catch errors early, but developers must ensure that all required properties and methods are present,
+    and no extra properties are included unless explicitly allowed.
+  - Defining function types in interfaces allows for more robust and predictable object structures, enabling better tooling and error checking.
+ 
+
+// Example: Showing the downside of type inference with object literals and interfaces
+
+interface Car {
+    model: string;
+    year: number;
+}
+
+// This will cause a TypeScript error because 'make' is not defined in the Car interface
+const mustang: Car = {
+    model: 'Mustang',
+    year: 2015,
+    make: '' // Error: Object literal may only specify known properties, and 'make' does not exist in type 'Car'
+};
+
+// This will also cause an error for the same reason
+const camaro: Car = {
+    model: 'camaro',
+    year: 2010,
+    make: '' // Error: Object literal may only specify known properties, and 'make' does not exist in type 'Car'
+};
+
+// The correct way is to only include properties defined in the interface
+const civic: Car = {
+    model: 'Civic',
+    year: 2020
+};
+
+function printCar(car: Car) {
+    console.log(car);
+}
+
+printCar(civic);
+
+//Downside of the Type Inference
+
+interface Car {
+    model: string;
+    year: number;
+}
+
+function printCar(car:Car){
+    console.log(car);
+}
+
+const mustang : Car = {
+model: 'Mustang',
+year: 2015,
+make: ''
+};
+
+const camaro : Car = {
+model: 'camaro',
+year: 2010,
+make: ''
+};
+
+printCar(mustang);
+printCar(camaro);
+
+//Function Types  
+
+interface Car {
+    model: string;
+    year: number;
+    setYear : (Year:number) => void 
+    setModel: (Model : string) => void
+    getDescription: () => string;
+}
+
+
+const mustang : Car = {
+model: 'Mustang',
+year: 2015,
+make: '',
+setYear (nextYear : number)  // error was Object literal may only specify known properties, and 'setYear' does not exist in type 'Car' 
+{
+    this.year = nextYear;
+};
+
+setModel(nextModel : string){
+    this.model = nextModel;
+},
+
+getDescription() {
+    return `Year:${this.year} , model:${this.model}`
+},
+ 
+};
+
+mustang.setModel()
