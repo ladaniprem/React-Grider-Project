@@ -513,3 +513,122 @@ type LoggableValue = string | number | string[] | Image;
 function logvalue(value: LoggableValue) {
     // Implementation here
 }
+
+// Theory: 
+- Generics in TypeScript allow you to write reusable and flexible functions, interfaces, and classes that work with any data type.
+- Without generics, you would have to write separate functions for each type, leading to code duplication.
+- Generics provide type safety while enabling code reuse by allowing you to specify type parameters.
+- You can use multiple generic parameters to handle functions or structures that work with more than one type.
+- Generics are commonly used in utility functions, data structures, and when working with asynchronous data fetching (e.g., APIs).
+- By using generics, you ensure that the types are preserved throughout your code, reducing runtime errors and improving maintainability.
+
+
+// Life without Generics 
+
+// function  wrapInArray (value : string) 
+// : (string)[]{
+//     return [value];
+// }
+// function  wrapInNumber (value : Number) 
+// : (Number)[]{
+//     return [value];
+// }
+
+
+// const result =  wrapInArray('asfdfg');
+// const result2 = wrapInNumber(10);
+
+//Introduction to function 
+
+// function  wrapInArray<T>(value : T) 
+// : (T)[]{
+//     return [value];
+// }
+
+// const result =  wrapInArray<string>('asfdfg');
+// const result2 = wrapInArray<number>(10);
+
+
+// More on function Generics 
+
+
+// function toRecord<T> (id:T,value:string){
+//     return {
+//         id,
+//         value
+//     };   
+// }
+
+// const result = toRecord<number>(123,'my@gmail.com');
+// const result2 = toRecord<string>('ec01','other@gmail.com');
+
+
+// multiple Generics types
+
+// function toRecord<T,U> (id:T ,value:U){
+//     return {
+//         id,
+//         value
+//     };   
+// }
+
+// const result = toRecord<number, string>(123,'my@gmail.com');
+// const result2 = toRecord<string,number[]>('ec01',[1,2,3]);
+
+// Note :- when the change the types postion to upper to change inthe result also accordingly to the type to assign it .
+
+// more Generics Examples 
+
+// function randomElement<T>(arr:T[]){
+// const index = Math.floor(Math.random()*arr.length)
+// return arr[index];
+// }
+
+// const result =  randomElement<number>([1,2,3]);
+// const result2 =  randomElement<string>(['a','b','c']);
+
+
+//Generics with Feetch 
+
+interface User {
+    username : string;
+}
+
+interface message {
+    content : string;
+}
+
+interface Image {
+    url : string
+}
+// async function fetchUser(){
+//     const res = await fetch('/user');
+//     const json = await res.json();
+
+//     return json as User;
+// }
+
+// async function fetchMessage(){
+//     const res = await fetch('/message');
+//     const json = await res.json();
+
+//     return json as message;
+// }
+
+async function fetchData<T>(path:string):Promise<T>{
+  const res = await fetch(path);
+  const json = await res.json();
+
+  return json as T
+}
+
+const run = async() => {
+
+    // const user = await fetchUser();
+    // const message = await fetchMessage();
+
+    const user = await fetchData<User>('/users');
+    const message = await fetchData<message>('/Messages');
+    const image = await fetchData<Image>('/images');
+
+};
