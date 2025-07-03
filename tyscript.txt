@@ -407,59 +407,109 @@ logOutput({ src : 'image.jpg'})
 // logOutput({ src : 'image.jpg'})
 
 
-// Tricky cases with Type Guards
-
-// interface image {
-//     src: string;
-// }
-// function logOutput(value: string | number | string[] | image )
-// {
-//     // if value is a string...
-//    if (typeof value === 'string') { 
-//       console.log( value.toUpperCase());
-//    }
-//    if(typeof value === 'number'){
-//       Math.random();
-//    }
-// //    if(typeof value === 'object'){
-// //     value // value: image | string[
-// //    }
-
-//   if(Array.isArray(value)){
-//     // value  value: string[]
-//     value.join('');
-//    }
-
-//    if(typeof value === 'object' && !Array.isArray(value)){
-//     //  value  value: image
-//     value.src; 
-//    }
-// }
-
-// logOutput('hi bro');
-// logOutput(1234);
-// logOutput(['hi','bro']);
-// logOutput({ src : 'image.jpg'})
-
 // Type Predicates 
 
-
-interface image {
+interface Image {
     src: string;
 }
 interface User {
     username : string
 }
+
+function isUser(value:Image | User) : value is User{
+    return 'username' in value;
+}
 function logOutput(value: Image | User )
 {
-  if (typeof value === 'object'){
-     value;
+  if ('username' in value){
+     console.log(value.username);
+  }
+//   if('src' in value){
+//     console.log(value.src);
+//   }
+  else{
+    console.log(value.src);
   }
 }
-
 
 logOutput({ src : 'image.jpg'});
 logOutput({username : 'ladani prem'});
 
+// Optional Properties and Optional Chaining
 
+// Optional properties allow some fields to be omitted from an object.
+// Optional chaining (?.) lets you safely access nested properties that might be undefined.
 
+interface UserProfile {
+    likes: string[];
+}
+
+interface User {
+    id: string;
+    username: string;
+    profile?: UserProfile; // 'profile' is optional
+}
+
+const user = {
+    id: 'prem',
+    username: 'me',
+    profile: {
+        likes: ['cats']
+    }
+};
+
+if (user.profile) {
+    user.profile.likes;
+}
+user.profile?.likes; // Safe access with optional chaining
+
+// Optional Parameters
+
+// You can mark function parameters as optional with '?'
+function logValue(value: string, message?: string) {
+    if (message) {
+        console.log(message, value);
+    } else {
+        console.log(value);
+    }
+}
+logValue('typescript with prem');
+logValue('aasdd', 'something else');
+
+// The 'any' and 'unknown' Types
+
+// 'any' disables type checking for a variable.
+// 'unknown' is a safer alternative; you must check its type before using it.
+
+interface Book {
+    title: string;
+}
+
+async function fetchBook(): Promise<Book> {
+    const res = await fetch('/book');
+    const data: unknown = await res.json();
+
+    // Type guard to ensure 'data' matches the 'Book' interface
+    if (data && typeof data === 'object' && 'title' in data && typeof (data as any).title === 'string') {
+        return data as Book;
+    }
+    throw new Error('expected to get a book, but didn\'t');
+}
+
+async function run() {
+    const book = await fetchBook();
+}
+
+// Type Aliases
+
+// Type aliases let you create custom names for types, including unions and object types.
+
+type Image = {
+    src: string;
+};
+
+type LoggableValue = string | number | string[] | Image;
+
+function logvalue(value: LoggableValue) {
+    // Implementation here
+}
