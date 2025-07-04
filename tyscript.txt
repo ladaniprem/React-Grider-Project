@@ -683,3 +683,77 @@ setColor([...color,'red']);
 return <button onClick={handleClick}>click</button>
 }
 
+// Generic Type Constraints:
+- The 'extends' keyword is used to constrain generic types, ensuring that the provided type arguments must satisfy certain conditions.
+- In the 'merge' function, both T and U are constrained to be objects, so only objects can be merged using this function.
+
+ - Merges two objects into one.
+  
+ - @template T - The type of the first object, constrained to 'object'.
+ - @template U - The type of the second object, constrained to 'object'.
+ - @param {T} objA - The first object to merge.
+ - @param {U} objB - The second object to merge.
+ - @returns {T & U} - A new object containing properties from both objA and objB.
+ 
+- Usage example demonstrates merging two objects with different properties.
+- The resulting object will have properties from both input objects.
+
+- Note: Accessing properties as functions (e.g., result.color()) is incorrect unless the property is a function.
+
+- More on Generic Type Constraints:
+- The 'keyof' operator is used to get a union type of all property names of a given type.
+- In the 'productKeys' type, it will be 'name' | 'count' for the 'product' interface.
+
+
+ - Collects the values of a specific property from an array of objects.
+
+ - @template T - The property key, constrained to keys of U.
+ - @template U - The object type, constrained to 'object'.
+ - @param {T} key - The property key to collect values for.
+ - @param {U[]} arr - The array of objects to extract values from.
+ - @returns {U[T][]} - An array of values corresponding to the specified key from each object.
+ 
+
+- Usage example demonstrates collecting the 'name' property from an array of product objects.
+- The result will be an array of names.
+
+//Generic Type Constrations 
+extends means must be 
+function merge <T extends object,U extends object>(objA:T,objB:U){
+    return {...objA,...objB};
+}
+
+const result = merge (
+    {id : 'abcd'},
+    {color : 'red'}
+);
+
+result.color();
+result.id();
+
+//more on Generic type Constrations
+
+interface product {
+    name: string;
+    count : number;
+}
+
+type productKeys = keyof product;
+
+const key: productKeys = 'count'
+
+
+function collect<T extends keyof U,U extends object>(key:T,arr:U[]){
+    return arr.map(el=> el[key]);
+}
+const result = collect('name', [
+    {
+        count :1 , 
+        name: 'jeel'
+    },
+    {
+        count : 2,
+        name: 'prem'
+    }
+
+]);
