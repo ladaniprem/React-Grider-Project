@@ -632,3 +632,54 @@ const run = async() => {
     const image = await fetchData<Image>('/images');
 
 };
+
+
+// Generic Type inference
+- The WrapArray function is a generic utility that takes a value of any type T and returns an array containing that value.
+- TypeScript infers the type parameter T based on the argument passed to the function.
+- Example: WrapArray('a') infers T as string, resulting in a string array ['a'].
+
+// More on generic type interface
+- The callAndReturn function demonstrates the use of generics with function types.
+- It accepts a function fn that returns a value of type T, and callAndReturn returns the result of invoking fn.
+- This pattern is useful for preserving type information through higher-order functions.
+
+// Issues with Generic Type interface
+- In the ColorPicker React component, useState is used with a generic type parameter string[], indicating the state is an array of strings.
+- The handleClick function demonstrates how to update the state by spreading the existing array and adding a new color.
+- This example highlights how generics can be used with React hooks to ensure type safety for component state.
+
+//Generic Type inference
+
+function WrapArray<T> (value:T):T[]{
+    return [value];
+}
+
+const result1= WrapArray('a');
+const result2 = WrapArray(123);
+
+// more on generic type interface 
+
+function callAndReturn<T>(fn:()=> T) : T{
+  return fn();
+}
+
+const result = callAndReturn (() => 'fdffg');
+
+// Issues with Generic Type interface 
+
+import React from 'react';
+import {useState} from 'react';
+
+function ColorPicker(){
+
+const [color,setColor] = useState<string[]>(['']);
+
+
+const handleClick = () => {
+setColor([...color,'red']);
+};
+
+return <button onClick={handleClick}>click</button>
+}
+
